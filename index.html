@@ -134,7 +134,16 @@
   .grupo{background:var(--hueso);border:1px solid var(--linea);margin-bottom:22px}
   .grupo-label{font-family:var(--mono);font-size:10px;letter-spacing:.2em;font-weight:500;
     text-transform:uppercase;color:var(--gris);padding:14px 22px 12px;
-    border-bottom:1px solid var(--linea)}
+    border-bottom:1px solid var(--linea);
+    display:flex;justify-content:space-between;align-items:center;gap:12px}
+  .g-name{flex:1 1 auto;min-width:0}
+  .g-del{flex:0 0 auto;font-family:var(--mono);font-size:13px;line-height:1;color:var(--gris);
+    padding:2px 4px;opacity:0;transition:opacity .15s,color .15s}
+  .grupo:hover .g-del,.g-del:focus-visible{opacity:.6}
+  .g-del:hover{opacity:1;color:var(--naranja)}
+  .g-del.arm{opacity:1;color:var(--naranja);font-size:9px;letter-spacing:.12em;
+    border:1px solid var(--naranja);padding:3px 8px;white-space:nowrap}
+  @media(pointer:coarse){.g-del{opacity:.35}}
   .task{display:flex;align-items:flex-start;gap:14px;padding:14px 22px;
     border-bottom:1px solid var(--linea);background:var(--hueso)}
   .task:last-of-type{border-bottom:none}
@@ -153,6 +162,10 @@
   .task-detail{font-family:var(--mono);font-size:11px;letter-spacing:.04em;
     color:var(--gris);margin-top:3px;line-height:1.6;cursor:text}
   .task-detail:empty{display:none}
+  .task-detail.vacio{color:var(--gris);opacity:0;transition:opacity .15s,color .15s}
+  .task:hover .task-detail.vacio,.task-detail.vacio:focus-visible{opacity:.55}
+  .task-detail.vacio:hover{opacity:1;color:var(--naranja)}
+  @media(pointer:coarse){.task-detail.vacio{opacity:.4}}
   .task[data-s="done"] .task-text{
     color:var(--gris);
     text-decoration:line-through;
@@ -209,6 +222,13 @@
   .add-input:focus{outline:none}
   .add-hint{font-family:var(--mono);font-size:9px;letter-spacing:.1em;color:var(--gris);white-space:nowrap}
 
+  .add-grupo-row{margin:-8px 0 26px}
+  .add-grupo-btn{font-family:var(--mono);font-size:10px;letter-spacing:.18em;font-weight:500;
+    text-transform:uppercase;color:var(--gris);padding:4px 0;transition:color .15s}
+  .add-grupo-btn:hover{color:var(--naranja)}
+  .edit-input.gname{font-family:var(--mono);font-size:10px;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--gris)}
+
   /* ── Chrome inferior ─────────────────────────────── */
   .chrome-bottom{margin-top:64px;border-top:1px solid var(--linea);
     padding:22px 0 40px;display:flex;justify-content:space-between;align-items:center;gap:16px;
@@ -223,7 +243,8 @@
   @media(max-width:640px){.chrome-bottom{flex-direction:column;align-items:flex-start;gap:10px}}
 
   @media print{
-    .chips,.del,.add-row,.reset-btn,#saveStatus,.legend{display:none !important}
+    .chips,.del,.add-row,.reset-btn,#saveStatus,.legend,
+    .g-del,.add-grupo-row,.task-detail.vacio{display:none !important}
     body{border-top:none}
     .grupo{break-inside:avoid}
   }
@@ -278,7 +299,7 @@
   /* ── Datos semilla ──────────────────────────────── */
   const SEED = {
     version: 2,
-    patch: 4,
+    patch: 5,
     updatedAt: Date.now(),
     channels: [
       {
@@ -325,9 +346,7 @@
             { id:"b3", t:"Brand book v2", d:"Identidad de marca · agosto 2026", s:"done", r:F, f:"" },
             { id:"b4", t:"Template maestro de presentaciones", d:"Chrome institucional · footer · emblema", s:"prog", r:F, f:"" },
             { id:"b5", t:"Template de propuesta y documentos", d:"", s:"todo", r:F, f:"" },
-            { id:"b6", t:"Firma de correo", d:"", s:"todo", r:F, f:"" }
-          ]},
-          { id:"brand-pres", name:"Presencia", tasks:[
+            { id:"b6", t:"Firma de correo", d:"", s:"todo", r:F, f:"" },
             { id:"b7", t:"Sitio web: contenido, diseño y publicación", d:"", s:"todo", r:F, f:"" },
             { id:"b8", t:"Página de empresa en LinkedIn", d:"", s:"todo", r:F, f:"" },
             { id:"b9", t:"One-pager institucional", d:"", s:"todo", r:F, f:"" }
@@ -421,8 +440,21 @@
     return s;
   }
   const isLate = t => !!t.f && t.s !== "done" && t.f < todayISO;
-  const defResp = gid => (gid === "adm-soft" || gid === "adm-infra") ? F
-    : (gid.indexOf("adm") === 0 || gid === "com-pipe") ? P : F;
+
+  /* Bloques de semilla: nombre fijo desde el código y sin botón de eliminar */
+  const SEED_GIDS = new Set();
+  for(const ch of SEED.channels) for(const g of ch.groups) SEED_GIDS.add(g.id);
+
+  function chanOfGroup(gid){
+    for(const ch of state.channels) if((ch.groups || []).some(g => g.id === gid)) return ch;
+    return null;
+  }
+  const defResp = gid => {
+    if(gid === "adm-soft" || gid === "adm-infra") return F;
+    if(gid === "com-pipe") return P;
+    const ch = chanOfGroup(gid);
+    return (ch && ch.id === "adm") ? P : F;
+  };
 
   /* Parches sobre estado ya guardado */
   function applyPatches(st){
@@ -454,6 +486,17 @@
         }
       }
       st.patch = 4;
+    }
+    if(p < 5){
+      for(const ch of st.channels || []){
+        const groups = ch.groups || [];
+        const i = groups.findIndex(g => g.id === "brand-pres");
+        if(i < 0) continue;
+        const id = groups.find(g => g.id === "brand-id");
+        if(id) id.tasks = id.tasks.concat(groups[i].tasks || []);
+        groups.splice(i, 1);
+      }
+      st.patch = 5;
     }
     return st;
   }
@@ -589,19 +632,23 @@
         </div>
         ${ch.groups.map(g => `
           <div class="grupo" data-g="${g.id}">
-            <div class="grupo-label">${esc(g.name)}</div>
+            <div class="grupo-label">
+              <span class="g-name">${esc(g.name)}</span>
+              ${SEED_GIDS.has(g.id) ? "" : `<button class="g-del" aria-label="Eliminar bloque: ${esc(g.name)}">×</button>`}
+            </div>
             ${g.tasks.map(t => `
               <div class="task" data-id="${t.id}" data-s="${t.s}">
                 <button class="chk" aria-label="Cambiar estado: ${esc(t.t)}"></button>
                 <div class="task-body">
                   <div class="task-text">${esc(t.t)}</div>
-                  <div class="task-detail">${esc(t.d || "")}</div>
+                  <div class="task-detail${t.d ? "" : " vacio"}">${t.d ? esc(t.d) : "+ nota"}</div>
                 </div>
                 ${metaChips(t)}
                 <button class="del" aria-label="Eliminar: ${esc(t.t)}">×</button>
               </div>`).join("")}
             <div class="add-row"><button class="add-btn">+ Agregar tarea</button></div>
           </div>`).join("")}
+        <div class="add-grupo-row"><button class="add-grupo-btn" data-ch="${ch.id}">+ Agregar bloque</button></div>
       </section>`;
     }).join("");
   }
@@ -636,6 +683,8 @@
     const input = document.createElement("input");
     input.className = "edit-input" + (field === "d" ? " detail" : "");
     input.value = original;
+    input.placeholder = field === "d" ? "Nota o subtexto" : "";
+    el.classList.remove("vacio");
     el.textContent = "";
     el.appendChild(input);
     input.focus();
@@ -695,6 +744,57 @@
         if(g) g.tasks.push({ id:"t" + Date.now().toString(36), t:v, d:"", s:"todo", r:defResp(gid), f:"" });
         render(); scheduleSave();
       } else render();
+    };
+    input.addEventListener("keydown", e => {
+      if(e.key === "Enter") commit();
+      if(e.key === "Escape"){ closed = true; render(); }
+    });
+    input.addEventListener("blur", commit);
+  }
+
+  /* ── Agregar bloque ─────────────────────────────── */
+  function startAddGroup(row, chId){
+    row.innerHTML = `<div class="add-form">
+      <input class="add-input" placeholder="Nuevo bloque">
+      <span class="add-hint">ENTER GUARDA · ESC CANCELA</span></div>`;
+    const input = row.querySelector("input");
+    input.focus();
+    let closed = false;
+    const commit = () => {
+      if(closed) return; closed = true;
+      const v = input.value.trim();
+      if(v){
+        const ch = state.channels.find(c => c.id === chId);
+        if(ch){
+          ch.groups = ch.groups || [];
+          ch.groups.push({ id:"g" + Date.now().toString(36), name:v, tasks:[] });
+        }
+        render(); scheduleSave();
+      } else render();
+    };
+    input.addEventListener("keydown", e => {
+      if(e.key === "Enter") commit();
+      if(e.key === "Escape"){ closed = true; render(); }
+    });
+    input.addEventListener("blur", commit);
+  }
+
+  /* Renombrar bloque propio (los de semilla los fija el código) */
+  function startEditGroup(el, g){
+    if(el.querySelector("input")) return;
+    const input = document.createElement("input");
+    input.className = "edit-input gname";
+    input.value = g.name;
+    el.textContent = "";
+    el.appendChild(input);
+    input.focus();
+    input.setSelectionRange(input.value.length, input.value.length);
+    let closed = false;
+    const commit = () => {
+      if(closed) return; closed = true;
+      const v = input.value.trim();
+      if(v) g.name = v;
+      render(); scheduleSave();
     };
     input.addEventListener("keydown", e => {
       if(e.key === "Enter") commit();
@@ -771,9 +871,37 @@
       }
       return;
     }
+    const nota = e.target.closest(".task-detail.vacio");
+    if(nota){
+      const r = findTask(nota.closest(".task").dataset.id);
+      if(r) startEdit(nota, r.task, "d");
+      return;
+    }
     const add = e.target.closest(".add-btn");
     if(add){
       startAdd(add.closest(".add-row"), add.closest(".grupo").dataset.g);
+      return;
+    }
+    const addg = e.target.closest(".add-grupo-btn");
+    if(addg){
+      startAddGroup(addg.closest(".add-grupo-row"), addg.dataset.ch);
+      return;
+    }
+    const gdel = e.target.closest(".g-del");
+    if(gdel){
+      if(gdel.classList.contains("arm")){
+        const gid = gdel.closest(".grupo").dataset.g;
+        for(const ch of state.channels){
+          const i = (ch.groups || []).findIndex(g => g.id === gid);
+          if(i > -1){ ch.groups.splice(i, 1); break; }
+        }
+        render(); scheduleSave();
+      }else{
+        const g = findGroup(gdel.closest(".grupo").dataset.g);
+        gdel.classList.add("arm");
+        gdel.textContent = (g && g.tasks.length) ? `¿Eliminar bloque y ${g.tasks.length} tareas?` : "¿Eliminar bloque?";
+        setTimeout(() => { if(gdel.isConnected){ gdel.classList.remove("arm"); gdel.textContent = "×"; } }, 2600);
+      }
       return;
     }
     if(e.target.closest("#exportBtn")){ exportJSON(); return; }
@@ -794,6 +922,15 @@
     }
   });
   document.addEventListener("dblclick", e => {
+    const gn = e.target.closest(".g-name");
+    if(gn){
+      const gid = gn.closest(".grupo").dataset.g;
+      if(!SEED_GIDS.has(gid)){
+        const g = findGroup(gid);
+        if(g) startEditGroup(gn, g);
+      }
+      return;
+    }
     const txt = e.target.closest(".task-text, .task-detail");
     if(!txt) return;
     const id = txt.closest(".task").dataset.id;
