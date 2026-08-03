@@ -57,6 +57,21 @@ Reglas:
 - Texto de usuario siempre escapado con `esc()` antes de insertarse en HTML.
 - Todavía sin base de datos ni endpoints. La persistencia es local por navegador.
 
+## Puerta de acceso
+
+`index.html` abre con una pantalla de acceso. Usuario `MCS`, clave definida por la firma.
+
+- El usuario no distingue mayúsculas, la clave sí.
+- La credencial no viaja en texto plano: se compara contra un digest PBKDF2-SHA256 (150 000 iteraciones, sal `meridian-mcs-2026`) sobre `usuario:clave` en minúsculas el usuario.
+- Al entrar se guarda `meridian-acceso = "1"` en `localStorage`. Un script en el `<head>` lo lee y agrega la clase `ok` al `<html>` antes de pintar, para que no haya parpadeo. El CSS oculta `#app` sin esa clase y oculta `.gate` con ella.
+- Botón `Salir` en el footer: borra la bandera y vuelve a la puerta sin tocar el estado del checklist.
+- Para cambiar la clave: recalcular el digest y reemplazar `GATE_DIGEST`.
+  ```bash
+  node -e "console.log(require('crypto').pbkdf2Sync('mcs:NUEVACLAVE','meridian-mcs-2026',150000,32,'sha256').toString('base64'))"
+  ```
+
+Lo que esta puerta sí hace: evitar que quien reciba la liga de rebote entre sin más. Lo que no hace: proteger la información. El repo es público, así que el contenido del checklist se lee directo en `index.html` desde GitHub sin pasar por la puerta. Protección real requiere repo privado con GitHub Pro o Team, o mover el contenido detrás de un backend con sesión.
+
 ## Limitación actual conocida
 
 `localStorage` es por navegador y por dispositivo: cada socio ve su propia copia del estado. No hay sincronización entre personas hasta conectar base de datos. El puente manual es exportar e importar JSON.

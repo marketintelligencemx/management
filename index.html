@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MCS · Checklist de arranque</title>
+<script>try{if(localStorage.getItem("meridian-acceso")==="1")document.documentElement.className+=" ok";}catch(e){}</script>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Crect y='24' width='96' height='13' fill='%23E84E1B'/%3E%3Crect y='53' width='73' height='13' fill='%23E84E1B'/%3E%3Crect y='82' width='96' height='13' fill='%23E84E1B'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -43,6 +44,43 @@
 
   .wrap{max-width:960px;margin:0 auto;padding:0 28px}
   @media(max-width:640px){.wrap{padding:0 18px}}
+
+  /* ── Puerta de acceso ────────────────────────────── */
+  /* html.ok lo pone el script del head: evita parpadeo al recargar */
+  #app{display:none}
+  html.ok #app{display:block}
+  html.ok .gate{display:none}
+  .gate{position:fixed;inset:0;z-index:100;background:var(--blanco);
+    display:flex;flex-direction:column;overflow-y:auto}
+  /* width:100% porque como hijos flex, el margin auto de .wrap los encogeria */
+  .gate-top{display:flex;justify-content:space-between;align-items:flex-start;width:100%;
+    padding-top:26px;padding-bottom:24px;border-bottom:1px solid var(--linea);flex:0 0 auto}
+  .gate-body{flex:1 1 auto;display:flex;align-items:center;justify-content:center;padding:44px 28px}
+  .gate-card{width:100%;max-width:430px;background:var(--hueso);border:1px solid var(--linea);
+    padding:38px 34px}
+  .gate-h1{font-family:var(--serif);font-weight:500;font-size:31px;line-height:1.1;
+    letter-spacing:-.015em;margin-top:10px}
+  .gate-nota{font-size:14px;color:var(--gris);margin-top:12px;line-height:1.55}
+  .gate-form{margin-top:30px}
+  .gate-lab{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;
+    font-weight:500;text-transform:uppercase;color:var(--gris);margin-bottom:7px}
+  .gate-input{width:100%;font-family:var(--sans);font-size:15.5px;color:var(--tinta);
+    background:var(--blanco);border:1px solid var(--linea);padding:10px 12px;margin-bottom:18px}
+  .gate-input:focus{outline:none;border-color:var(--naranja)}
+  .gate-btn{width:100%;font-family:var(--mono);font-size:10px;letter-spacing:.2em;font-weight:500;
+    text-transform:uppercase;color:var(--blanco);background:var(--tinta);border:1px solid var(--tinta);
+    padding:13px;margin-top:6px;transition:background .15s,border-color .15s}
+  .gate-btn:hover{background:var(--naranja);border-color:var(--naranja)}
+  .gate-btn:disabled{opacity:.45;cursor:default}
+  .gate-msg{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--naranja);margin-top:15px;min-height:13px;line-height:1.6}
+  .gate-foot{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--gris);padding-bottom:30px;flex:0 0 auto;width:100%}
+  @media(max-width:640px){
+    .gate-card{padding:28px 22px}
+    .gate-h1{font-size:25px}
+    .gate-body{padding:32px 18px}
+  }
 
   /* ── Chrome superior ─────────────────────────────── */
   .chrome-top{
@@ -257,6 +295,37 @@
 </head>
 <body>
 
+<div class="gate" id="gate">
+  <div class="gate-top wrap">
+    <div class="wordmark">
+      <div class="wm-line">M<svg viewBox="0 0 96 71" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="0" y="0" width="96" height="13" fill="#E84E1B"/><rect x="0" y="29" width="73" height="13" fill="#E84E1B"/><rect x="0" y="58" width="96" height="13" fill="#E84E1B"/></svg>RIDIAN</div>
+      <div class="wm-sub">CONSULTING &amp; SOLUTIONS</div>
+    </div>
+    <div class="emblema-mini"><svg viewBox="0 0 96 71" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="0" y="0" width="96" height="13" fill="#E84E1B"/><rect x="0" y="29" width="73" height="13" fill="#E84E1B"/><rect x="0" y="58" width="96" height="13" fill="#E84E1B"/></svg>MCS</div>
+  </div>
+
+  <div class="gate-body">
+    <div class="gate-card">
+      <div class="kicker">Acceso interno</div>
+      <h1 class="gate-h1">Herramientas de gestión</h1>
+      <div class="gate-nota">Uso interno de Meridian Consulting &amp; Solutions.</div>
+      <form class="gate-form" id="gateForm" autocomplete="on">
+        <label class="gate-lab" for="gUser">Usuario</label>
+        <input class="gate-input" id="gUser" name="username" autocomplete="username"
+          autocapitalize="none" autocorrect="off" spellcheck="false" required>
+        <label class="gate-lab" for="gPass">Clave</label>
+        <input class="gate-input" id="gPass" name="password" type="password"
+          autocomplete="current-password" required>
+        <button class="gate-btn" id="gateBtn" type="submit">Entrar</button>
+        <div class="gate-msg" id="gateMsg" role="alert" aria-live="polite"></div>
+      </form>
+    </div>
+  </div>
+
+  <div class="gate-foot wrap">Meridian Consulting &amp; Solutions · CDMX</div>
+</div>
+
+<div id="app">
 <div class="wrap">
   <header class="chrome-top">
     <div class="wordmark">
@@ -290,8 +359,9 @@
 <div class="wrap">
   <footer class="chrome-bottom">
     <span>Meridian Consulting &amp; Solutions · uso interno</span>
-    <span><span id="stamp"></span>&nbsp;&nbsp;·&nbsp;&nbsp;<button class="foot-btn" id="exportBtn">Exportar</button>&nbsp;·&nbsp;<button class="foot-btn" id="importBtn">Importar</button>&nbsp;·&nbsp;<button class="reset-btn" id="resetBtn">Restablecer lista</button><input type="file" id="importFile" accept="application/json,.json" hidden></span>
+    <span><span id="stamp"></span>&nbsp;&nbsp;·&nbsp;&nbsp;<button class="foot-btn" id="exportBtn">Exportar</button>&nbsp;·&nbsp;<button class="foot-btn" id="importBtn">Importar</button>&nbsp;·&nbsp;<button class="reset-btn" id="resetBtn">Restablecer lista</button>&nbsp;·&nbsp;<button class="foot-btn" id="salirBtn">Salir</button><input type="file" id="importFile" accept="application/json,.json" hidden></span>
   </footer>
+</div>
 </div>
 
 <script>
@@ -300,6 +370,64 @@
   const KEY    = "meridian-arranque-v2";
   const KEY_V1 = "meridian-arranque-v1";
   const F = "Fray", P = "Pancho";
+
+  /* ── Puerta de acceso ───────────────────────────────
+     Cortina, no candado: el repo es publico y el contenido
+     viaja en este mismo archivo. Sirve para que la liga no
+     quede abierta a cualquiera que la reciba de rebote, no
+     para proteger informacion. La clave se guarda derivada
+     (PBKDF2-SHA256) para no publicarla en texto plano.     */
+  const ACCESO_KEY  = "meridian-acceso";
+  const GATE_SALT   = "meridian-mcs-2026";
+  const GATE_DIGEST = "+TQTPd5+ywRlA+xsXtgmawjgODVIQ+wwYcWvnVcE2kQ=";
+  const GATE_ITER   = 150000;
+
+  async function deriveCred(user, pass){
+    const enc = new TextEncoder();
+    const km = await crypto.subtle.importKey(
+      "raw", enc.encode(user.trim().toLowerCase() + ":" + pass), "PBKDF2", false, ["deriveBits"]);
+    const bits = await crypto.subtle.deriveBits(
+      { name:"PBKDF2", salt:enc.encode(GATE_SALT), iterations:GATE_ITER, hash:"SHA-256" }, km, 256);
+    let s = "";
+    new Uint8Array(bits).forEach(b => { s += String.fromCharCode(b); });
+    return btoa(s);
+  }
+  function abrirApp(){
+    if(document.documentElement.className.indexOf("ok") < 0)
+      document.documentElement.className += " ok";
+  }
+  function initGate(){
+    const form = document.getElementById("gateForm");
+    const msg  = document.getElementById("gateMsg");
+    const btn  = document.getElementById("gateBtn");
+    const user = document.getElementById("gUser");
+    const pass = document.getElementById("gPass");
+    if(!(window.crypto && crypto.subtle)){
+      msg.textContent = "Este navegador no puede verificar el acceso";
+      btn.disabled = true;
+      return;
+    }
+    if(document.documentElement.className.indexOf("ok") < 0) user.focus();
+    form.addEventListener("submit", async e => {
+      e.preventDefault();
+      btn.disabled = true;
+      msg.textContent = "Verificando…";
+      let d = "";
+      try{ d = await deriveCred(user.value, pass.value); }catch(err){}
+      if(d && d === GATE_DIGEST){
+        try{ localStorage.setItem(ACCESO_KEY, "1"); }catch(err){}
+        msg.textContent = "";
+        abrirApp();
+        window.scrollTo(0, 0);
+      }else{
+        btn.disabled = false;
+        msg.textContent = "Usuario o clave incorrectos";
+        pass.value = "";
+        pass.focus();
+      }
+    });
+  }
+  initGate();
 
   /* ── Datos semilla ──────────────────────────────── */
   const SEED = {
@@ -907,6 +1035,17 @@
         gdel.textContent = (g && g.tasks.length) ? `¿Eliminar bloque y ${g.tasks.length} tareas?` : "¿Eliminar bloque?";
         setTimeout(() => { if(gdel.isConnected){ gdel.classList.remove("arm"); gdel.textContent = "×"; } }, 2600);
       }
+      return;
+    }
+    const salir = e.target.closest("#salirBtn");
+    if(salir){
+      try{ localStorage.removeItem(ACCESO_KEY); }catch(err){}
+      document.documentElement.className = document.documentElement.className.replace(/\bok\b/g, "");
+      const p = document.getElementById("gPass"); if(p) p.value = "";
+      const u = document.getElementById("gUser"); if(u){ u.value = ""; u.focus(); }
+      const m = document.getElementById("gateMsg"); if(m) m.textContent = "";
+      const b = document.getElementById("gateBtn"); if(b) b.disabled = false;
+      window.scrollTo(0, 0);
       return;
     }
     if(e.target.closest("#exportBtn")){ exportJSON(); return; }
