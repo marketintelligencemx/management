@@ -278,7 +278,7 @@
   /* ── Datos semilla ──────────────────────────────── */
   const SEED = {
     version: 2,
-    patch: 3,
+    patch: 4,
     updatedAt: Date.now(),
     channels: [
       {
@@ -306,7 +306,8 @@
             { id:"a13", t:"Claude: 3 licencias Max", d:"", s:"todo", r:F, f:"" },
             { id:"a14", t:"Supabase: 1 licencia Pro", d:"", s:"todo", r:F, f:"" },
             { id:"a15", t:"Vercel: 1 licencia Pro", d:"", s:"todo", r:F, f:"" },
-            { id:"a16", t:"GitHub: 2 licencias", d:"", s:"todo", r:F, f:"" }
+            { id:"a16", t:"GitHub: 2 licencias", d:"", s:"todo", r:F, f:"" },
+            { id:"a20", t:"Docusign: licencias de firma electrónica", d:"Definir plan y número de licencias", s:"todo", r:F, f:"" }
           ]},
           { id:"adm-infra", name:"Infraestructura digital", tasks:[
             { id:"a17", t:"Dominio y hosting del sitio", d:"", s:"todo", r:F, f:"" },
@@ -440,6 +441,19 @@
         }
       }
       st.patch = 3;
+    }
+    if(p < 4){
+      let hayA20 = false;
+      for(const ch of st.channels || []) for(const g of ch.groups || []) for(const t of g.tasks || []){
+        if(t.id === "a20") hayA20 = true;
+      }
+      if(!hayA20){
+        for(const ch of st.channels || []){
+          const g = (ch.groups || []).find(g => g.id === "adm-soft");
+          if(g) g.tasks.push({ id:"a20", t:"Docusign: licencias de firma electrónica", d:"Definir plan y número de licencias", s:"todo", r:F, f:"" });
+        }
+      }
+      st.patch = 4;
     }
     return st;
   }
