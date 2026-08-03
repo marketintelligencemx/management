@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MCS · Checklist de arranque</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Crect y='24' width='96' height='13' fill='%23E84E1B'/%3E%3Crect y='53' width='73' height='13' fill='%23E84E1B'/%3E%3Crect y='82' width='96' height='13' fill='%23E84E1B'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --tinta:#0E0D0B;
+    --naranja:#E84E1B;
+    --naranja-suave:rgba(232,78,27,.26);
+    --gris:#8B857B;
+    --hueso:#F6F4EF;
+    --blanco:#FFFFFF;
+    --linea:#E5E0D6;
+    --serif:"Newsreader", Georgia, serif;
+    --sans:"Instrument Sans", -apple-system, "Segoe UI", sans-serif;
+    --mono:"IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    *,*::before,*::after{transition:none !important;animation:none !important}
+  }
+  body{
+    background:var(--blanco);
+    color:var(--tinta);
+    font-family:var(--sans);
+    font-size:15.5px;
+    line-height:1.5;
+    border-top:3px solid var(--naranja);
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none}
+  button{font-family:inherit;background:none;border:none;cursor:pointer;color:inherit}
+  :focus-visible{outline:2px solid var(--naranja);outline-offset:2px}
+  .mono{font-family:var(--mono)}
+
+  .wrap{max-width:960px;margin:0 auto;padding:0 28px}
+  @media(max-width:640px){.wrap{padding:0 18px}}
+
+  /* ── Chrome superior ─────────────────────────────── */
+  .chrome-top{
+    display:flex;align-items:flex-start;justify-content:space-between;
+    padding:30px 0 26px;border-bottom:1px solid var(--linea);
+  }
+  .wordmark{display:flex;flex-direction:column;gap:6px}
+  .wm-line{display:flex;align-items:baseline;font-family:var(--mono);font-weight:500;
+    font-size:26px;letter-spacing:.34em;line-height:1}
+  .wm-line svg{width:22px;height:auto;margin:0 .1em 0 .04em;transform:translateY(-1px)}
+  .wm-sub{font-family:var(--mono);font-size:9.5px;letter-spacing:.4em;color:var(--gris)}
+  .chrome-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px;padding-top:4px}
+  .emblema-mini{display:flex;align-items:center;gap:8px;font-family:var(--mono);
+    font-size:12px;letter-spacing:.28em;font-weight:500}
+  .emblema-mini svg{width:17px;height:auto}
+  #saveStatus{font-family:var(--mono);font-size:9.5px;letter-spacing:.14em;color:var(--gris);text-align:right}
+  #saveStatus.err{color:var(--naranja)}
+  @media(max-width:640px){
+    .wm-line{font-size:20px;letter-spacing:.26em}
+    .wm-sub{font-size:8px;letter-spacing:.3em}
+    .emblema-mini{display:none}
+  }
+
+  /* ── Hero ─────────────────────────────────────────── */
+  .hero{padding:54px 0 40px}
+  .kicker{font-family:var(--mono);font-size:11px;letter-spacing:.24em;color:var(--naranja);
+    font-weight:500;text-transform:uppercase;margin-bottom:18px}
+  h1{font-family:var(--serif);font-weight:500;font-size:clamp(34px,5.6vw,58px);
+    line-height:1.06;letter-spacing:-.015em;max-width:760px}
+  h1 em, h2 em{font-style:italic;color:var(--naranja);font-weight:400}
+  .hero-meta{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;color:var(--gris);
+    text-transform:uppercase;margin-top:20px;line-height:2}
+
+  /* ── Avance por canal: los paralelos ─────────────── */
+  .prog{margin-top:38px;max-width:660px}
+  .prow{display:grid;grid-template-columns:196px 1fr 52px;gap:14px;align-items:center;
+    margin-bottom:11px}
+  .plabel{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;font-weight:500;
+    text-transform:uppercase;color:var(--tinta);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .plabel .n{color:var(--naranja);margin-right:4px}
+  .pbar{display:block;height:11px;background:var(--hueso);border:1px solid var(--linea);
+    position:relative;overflow:hidden}
+  .pbar .f1,.pbar .f2{position:absolute;top:0;bottom:0}
+  .pbar .f1{left:0;background:var(--naranja)}
+  .pbar .f2{background:var(--naranja-suave)}
+  .pfrac{font-family:var(--mono);font-size:10px;letter-spacing:.06em;color:var(--gris);text-align:right}
+  .prow:hover .plabel{color:var(--naranja)}
+  @media(max-width:640px){
+    .prow{grid-template-columns:1fr 52px;grid-template-areas:"label frac" "bar bar";
+      gap:6px 10px;margin-bottom:16px}
+    .plabel{grid-area:label}
+    .pfrac{grid-area:frac}
+    .pbar{grid-area:bar}
+  }
+  .prog-nums{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--gris);
+    text-transform:uppercase;margin-top:18px;padding-top:16px;border-top:1px solid var(--linea)}
+  .prog-nums b{color:var(--tinta);font-weight:600}
+  .prog-nums .np b{color:var(--naranja)}
+  .legend{font-family:var(--mono);font-size:9.5px;letter-spacing:.12em;color:var(--gris);
+    text-transform:uppercase;margin-top:26px;line-height:2}
+
+  /* ── Navegación por canal ─────────────────────────── */
+  .chips{position:sticky;top:0;z-index:10;background:var(--blanco);
+    border-top:1px solid var(--linea);border-bottom:1px solid var(--linea)}
+  .chips-inner{display:flex;gap:0;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .chip{flex:0 0 auto;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;
+    text-transform:uppercase;padding:13px 18px;border-right:1px solid var(--linea);
+    color:var(--tinta);white-space:nowrap}
+  .chip:first-child{border-left:1px solid var(--linea)}
+  .chip:hover{background:var(--hueso)}
+  .chip .n{color:var(--naranja);font-weight:600}
+  .chip .c{color:var(--gris);margin-left:8px}
+
+  /* ── Canales ─────────────────────────────────────── */
+  .canal{padding:56px 0 8px}
+  .canal-head{display:flex;align-items:flex-end;justify-content:space-between;
+    gap:16px;margin-bottom:24px;border-bottom:1px solid var(--linea);padding-bottom:18px}
+  .canal h2{font-family:var(--serif);font-weight:500;font-size:clamp(25px,3.6vw,34px);
+    letter-spacing:-.01em;line-height:1.1;margin-top:12px}
+  .canal-count{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;
+    color:var(--gris);text-transform:uppercase;white-space:nowrap;padding-bottom:6px}
+  .canal-count b{color:var(--tinta);font-weight:600}
+  @media(max-width:640px){
+    .canal-head{flex-direction:column;align-items:flex-start;gap:6px}
+    .canal-count{padding-bottom:0}
+  }
+
+  /* ── Grupos y tareas ─────────────────────────────── */
+  .grupo{background:var(--hueso);border:1px solid var(--linea);margin-bottom:22px}
+  .grupo-label{font-family:var(--mono);font-size:10px;letter-spacing:.2em;font-weight:500;
+    text-transform:uppercase;color:var(--gris);padding:14px 22px 12px;
+    border-bottom:1px solid var(--linea)}
+  .task{display:flex;align-items:flex-start;gap:14px;padding:14px 22px;
+    border-bottom:1px solid var(--linea);background:var(--hueso)}
+  .task:last-of-type{border-bottom:none}
+  @media(max-width:640px){.task,.grupo-label,.add-row{padding-left:16px;padding-right:16px}}
+
+  .chk{flex:0 0 auto;width:19px;height:19px;border:1.5px solid var(--tinta);
+    background:var(--hueso);margin-top:2px;position:relative;transition:border-color .15s}
+  .chk:hover{border-color:var(--naranja)}
+  .task[data-s="prog"] .chk::after{content:"";position:absolute;inset:4px;background:var(--naranja)}
+  .task[data-s="done"] .chk{background:var(--tinta);border-color:var(--tinta)}
+  .task[data-s="done"] .chk::after{content:"";position:absolute;left:4px;top:4px;width:8px;height:4px;
+    border-left:2px solid var(--hueso);border-bottom:2px solid var(--hueso);transform:rotate(-48deg)}
+
+  .task-body{flex:1 1 auto;min-width:0}
+  .task-text{font-size:15.5px;line-height:1.45;cursor:text}
+  .task-detail{font-family:var(--mono);font-size:11px;letter-spacing:.04em;
+    color:var(--gris);margin-top:3px;line-height:1.6;cursor:text}
+  .task-detail:empty{display:none}
+  .task[data-s="done"] .task-text{
+    color:var(--gris);
+    text-decoration:line-through;
+    text-decoration-color:var(--naranja);
+    text-decoration-thickness:1.5px;
+  }
+  .task[data-s="done"] .task-detail{opacity:.55}
+  .task[data-s="done"] .meta{opacity:.5}
+
+  .meta{display:flex;gap:6px;align-items:center;flex:0 0 auto;margin-top:2px}
+  .tag{display:none;font-family:var(--mono);font-size:9px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--naranja);border:1px solid var(--naranja);
+    padding:3px 8px;font-weight:500;white-space:nowrap}
+  .task[data-s="prog"] .tag{display:inline-block}
+  .chip-f,.chip-r{font-family:var(--mono);font-size:9px;letter-spacing:.12em;
+    text-transform:uppercase;border:1px solid var(--linea);padding:3px 8px;
+    color:var(--tinta);white-space:nowrap;transition:border-color .15s,color .15s}
+  .chip-f:hover,.chip-r:hover{border-color:var(--naranja)}
+  .chip-f.empty{color:var(--gris);border-style:dashed}
+  .chip-f.late{color:var(--naranja);border-color:var(--naranja);font-weight:600}
+  .date-input{font-family:var(--mono);font-size:10px;border:1px solid var(--naranja);
+    background:var(--hueso);color:var(--tinta);padding:1px 4px;max-width:130px}
+  .date-input:focus{outline:none}
+
+  .del{flex:0 0 auto;font-family:var(--mono);font-size:14px;line-height:1;color:var(--gris);
+    padding:4px 6px;margin-top:1px;opacity:0;transition:opacity .15s,color .15s}
+  .task:hover .del,.del:focus-visible{opacity:.6}
+  .del:hover{opacity:1;color:var(--naranja)}
+  .del.arm{opacity:1;color:var(--naranja);font-size:9px;letter-spacing:.12em;
+    border:1px solid var(--naranja);padding:4px 8px;margin-top:3px}
+  @media(pointer:coarse){.del{opacity:.35}}
+
+  @media(max-width:640px){
+    .task{flex-wrap:wrap}
+    .chk{order:1}
+    .task-body{order:2;flex:1 1 0;min-width:0}
+    .del{order:3}
+    .meta{order:4;flex-basis:100%;padding-left:33px;margin-top:6px;flex-wrap:wrap}
+  }
+
+  .edit-input{width:100%;font-family:var(--sans);font-size:15.5px;line-height:1.45;
+    border:none;border-bottom:1px solid var(--naranja);background:transparent;
+    color:var(--tinta);padding:0 0 2px}
+  .edit-input.detail{font-family:var(--mono);font-size:11px;color:var(--gris)}
+  .edit-input:focus{outline:none}
+
+  .add-row{padding:12px 22px}
+  .add-btn{font-family:var(--mono);font-size:10px;letter-spacing:.18em;font-weight:500;
+    text-transform:uppercase;color:var(--gris);padding:4px 0;transition:color .15s}
+  .add-btn:hover{color:var(--naranja)}
+  .add-form{display:flex;gap:12px;align-items:center}
+  .add-input{flex:1;font-family:var(--sans);font-size:15px;border:none;
+    border-bottom:1px solid var(--naranja);background:transparent;padding:2px 0 4px}
+  .add-input:focus{outline:none}
+  .add-hint{font-family:var(--mono);font-size:9px;letter-spacing:.1em;color:var(--gris);white-space:nowrap}
+
+  /* ── Chrome inferior ─────────────────────────────── */
+  .chrome-bottom{margin-top:64px;border-top:1px solid var(--linea);
+    padding:22px 0 40px;display:flex;justify-content:space-between;align-items:center;gap:16px;
+    font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;color:var(--gris);text-transform:uppercase}
+  .foot-btn{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--gris)}
+  .foot-btn:hover{color:var(--naranja)}
+  .reset-btn{font-family:var(--mono);font-size:9.5px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--gris);border-bottom:1px solid transparent}
+  .reset-btn:hover{color:var(--naranja)}
+  .reset-btn.arm{color:var(--naranja);border-bottom-color:var(--naranja)}
+  @media(max-width:640px){.chrome-bottom{flex-direction:column;align-items:flex-start;gap:10px}}
+
+  @media print{
+    .chips,.del,.add-row,.reset-btn,#saveStatus,.legend{display:none !important}
+    body{border-top:none}
+    .grupo{break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="chrome-top">
+    <div class="wordmark">
+      <div class="wm-line">M<svg viewBox="0 0 96 71" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="0" y="0" width="96" height="13" fill="#E84E1B"/><rect x="0" y="29" width="73" height="13" fill="#E84E1B"/><rect x="0" y="58" width="96" height="13" fill="#E84E1B"/></svg>RIDIAN</div>
+      <div class="wm-sub">CONSULTING &amp; SOLUTIONS</div>
+    </div>
+    <div class="chrome-right">
+      <div class="emblema-mini"><svg viewBox="0 0 96 71" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="0" y="0" width="96" height="13" fill="#E84E1B"/><rect x="0" y="29" width="73" height="13" fill="#E84E1B"/><rect x="0" y="58" width="96" height="13" fill="#E84E1B"/></svg>MCS</div>
+      <div id="saveStatus" class="mono">CARGANDO…</div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="kicker">Arranque de operaciones</div>
+    <h1>Checklist de pendientes</h1>
+    <div class="hero-meta">Meridian Consulting &amp; Solutions, S.C. · CDMX · Escritura firmada · Notaría 169</div>
+
+    <div class="prog" aria-label="Avance por canal">
+      <div id="progRows"></div>
+      <div class="prog-nums" id="progNums"></div>
+    </div>
+
+    <div class="legend">Clic en la casilla: pendiente → en proceso → hecha · clic en fecha o responsable para cambiarlos · doble clic edita el texto · × elimina</div>
+  </section>
+</div>
+
+<nav class="chips"><div class="wrap"><div class="chips-inner" id="chips"></div></div></nav>
+
+<main class="wrap" id="channels"></main>
+
+<div class="wrap">
+  <footer class="chrome-bottom">
+    <span>Meridian Consulting &amp; Solutions · uso interno</span>
+    <span><span id="stamp"></span>&nbsp;&nbsp;·&nbsp;&nbsp;<button class="foot-btn" id="exportBtn">Exportar</button>&nbsp;·&nbsp;<button class="foot-btn" id="importBtn">Importar</button>&nbsp;·&nbsp;<button class="reset-btn" id="resetBtn">Restablecer lista</button><input type="file" id="importFile" accept="application/json,.json" hidden></span>
+  </footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  const KEY    = "meridian-arranque-v2";
+  const KEY_V1 = "meridian-arranque-v1";
+  const F = "Fray", P = "Pancho";
+
+  /* ── Datos semilla ──────────────────────────────── */
+  const SEED = {
+    version: 2,
+    patch: 3,
+    updatedAt: Date.now(),
+    channels: [
+      {
+        id:"adm", num:"01", name:"Administrativo",
+        h2:'Administrativo',
+        groups:[
+          { id:"adm-legal", name:"Constitución y legal", tasks:[
+            { id:"a1", t:"Escritura de constitución firmada", d:"Notaría 169 CDMX · Miguel Ángel Beltrán · libro 500", s:"done", r:P, f:"" },
+            { id:"a2", t:"Recoger testimonio y copias certificadas", d:"Pendiente con la notaría", s:"todo", r:P, f:"" },
+            { id:"a3", t:"Inscripción en el Registro Público de Personas Morales", d:"La gestiona la notaría · dar seguimiento", s:"todo", r:P, f:"" },
+            { id:"a4", t:"Aviso de uso de denominación ante Secretaría de Economía", d:"Autorización A202603270943262348 · 27 mar 2026", s:"todo", r:P, f:"" },
+            { id:"a5", t:"RFC de la sociedad y e.firma en el SAT", d:"Acude el representante legal con escritura original", s:"todo", r:P, f:"" },
+            { id:"a6", t:"Buzón tributario y Certificado de Sello Digital", d:"Necesario para facturar", s:"todo", r:P, f:"" },
+            { id:"a7", t:"Definir contador y calendario de obligaciones fiscales", d:"ISR · IVA · retenciones de la S.C.", s:"todo", r:P, f:"" },
+            { id:"a8", t:"Abrir libro de registro de socios", d:"Artículo séptimo de estatutos · resguarda el consejo", s:"todo", r:P, f:"" }
+          ]},
+          { id:"adm-banco", name:"Bancario y gastos", tasks:[
+            { id:"a9",  t:"Apertura de cuenta bancaria empresarial", d:"Requiere escritura, RFC y poderes", s:"todo", r:P, f:"" },
+            { id:"a10", t:"Solicitud de tarjetas corporativas", d:"", s:"todo", r:P, f:"" },
+            { id:"a11", t:"Esquema de comprobación de gastos", d:"Política de viáticos y reembolsos", s:"todo", r:P, f:"" }
+          ]},
+          { id:"adm-soft", name:"Software y licencias", tasks:[
+            { id:"a19", t:"Definición de tech stack final y costeo", d:"", s:"todo", r:F, f:"2026-08-04" },
+            { id:"a12", t:"Microsoft 365: 1 licencia de administración", d:"Al menos plan Pro", s:"todo", r:F, f:"" },
+            { id:"a13", t:"Claude: 3 licencias Max", d:"", s:"todo", r:F, f:"" },
+            { id:"a14", t:"Supabase: 1 licencia Pro", d:"", s:"todo", r:F, f:"" },
+            { id:"a15", t:"Vercel: 1 licencia Pro", d:"", s:"todo", r:F, f:"" },
+            { id:"a16", t:"GitHub: 2 licencias", d:"", s:"todo", r:F, f:"" }
+          ]},
+          { id:"adm-infra", name:"Infraestructura digital", tasks:[
+            { id:"a17", t:"Dominio y hosting del sitio", d:"", s:"todo", r:F, f:"" },
+            { id:"a18", t:"Correo corporativo", d:"Sobre el tenant de Microsoft 365", s:"todo", r:F, f:"" }
+          ]}
+        ]
+      },
+      {
+        id:"brand", num:"02", name:"Branding & Marketing",
+        h2:'Branding &amp; Marketing',
+        groups:[
+          { id:"brand-id", name:"Identidad", tasks:[
+            { id:"b1", t:"Logo y variantes", d:"Principal · MCS compacta · invertido · emblema", s:"done", r:F, f:"" },
+            { id:"b2", t:"Tipografías definidas", d:"Newsreader · Instrument Sans · IBM Plex Mono", s:"done", r:F, f:"" },
+            { id:"b3", t:"Brand book v2", d:"Identidad de marca · agosto 2026", s:"done", r:F, f:"" },
+            { id:"b4", t:"Template maestro de presentaciones", d:"Chrome institucional · footer · emblema", s:"prog", r:F, f:"" },
+            { id:"b5", t:"Template de propuesta y documentos", d:"", s:"todo", r:F, f:"" },
+            { id:"b6", t:"Firma de correo", d:"", s:"todo", r:F, f:"" }
+          ]},
+          { id:"brand-pres", name:"Presencia", tasks:[
+            { id:"b7", t:"Sitio web: contenido, diseño y publicación", d:"", s:"todo", r:F, f:"" },
+            { id:"b8", t:"Página de empresa en LinkedIn", d:"", s:"todo", r:F, f:"" },
+            { id:"b9", t:"One-pager institucional", d:"", s:"todo", r:F, f:"" }
+          ]}
+        ]
+      },
+      {
+        id:"com", num:"03", name:"Comercial",
+        h2:'Comercial',
+        groups:[
+          { id:"com-def", name:"Definiciones", tasks:[
+            { id:"c1", t:"Oferta de valor", d:"Articulada en propuesta Sura · falta versión institucional", s:"prog", r:F, f:"" },
+            { id:"c2", t:"Pricing: tiers y estandarización", d:"Por servicio y por paquete", s:"todo", r:F, f:"" },
+            { id:"c3", t:"Revenue management por tipo de servicio", d:"", s:"todo", r:F, f:"" }
+          ]},
+          { id:"com-mat", name:"Materiales", tasks:[
+            { id:"c4", t:"Deck macro comercial", d:"", s:"todo", r:F, f:"" },
+            { id:"c5", t:"Deck por giro", d:"", s:"todo", r:F, f:"" },
+            { id:"c6", t:"Presentación Sura", d:"Oferta de valor · agosto 2026", s:"done", r:F, f:"" }
+          ]},
+          { id:"com-pipe", name:"Pipeline", tasks:[
+            { id:"c7", t:"Prospección: Papelerías Marón (Tampico)", d:"", s:"todo", r:P, f:"" },
+            { id:"c8", t:"Lista de prospectos por giro", d:"", s:"todo", r:P, f:"" }
+          ]}
+        ]
+      },
+      {
+        id:"op", num:"04", name:"Operativo",
+        h2:'Operativo',
+        groups:[
+          { id:"op-proj", name:"Proyectos en curso", tasks:[
+            { id:"d1", t:"Estudio de mercado 1: entregado", d:"Vendido y entregado al cliente", s:"done", r:F, f:"" },
+            { id:"d2", t:"Estudio PPR (Sura): definir enfoque", d:"Desempleo o desempeño · acordar con el cliente", s:"prog", r:F, f:"" },
+            { id:"d7", t:"Estudio PPR (Sura): levantamiento y análisis", d:"Fuentes, datos y hallazgos", s:"todo", r:F, f:"" },
+            { id:"d8", t:"Estudio PPR (Sura): informe final y envío", d:"", s:"todo", r:F, f:"" }
+          ]},
+          { id:"op-metod", name:"Metodología de estudios", tasks:[
+            { id:"d3", t:"Metodología estándar documentada", d:"Fases, tiempos y entregables por estudio", s:"todo", r:F, f:"" },
+            { id:"d9", t:"Índice maestro del informe tipo", d:"Estructura única, de macro a micro", s:"todo", r:F, f:"" },
+            { id:"d10", t:"Catálogo de fuentes de datos por giro", d:"INEGI · DENUE · cámaras · fuentes de pago", s:"todo", r:F, f:"" }
+          ]},
+          { id:"op-entrega", name:"Entrega y calidad", tasks:[
+            { id:"d4", t:"Templates de entregables", d:"Informe final y working files", s:"todo", r:F, f:"" },
+            { id:"d6", t:"Checklist de calidad antes de enviar", d:"", s:"todo", r:F, f:"" },
+            { id:"d11", t:"Acta de cierre certificada por el cliente", d:"El resultado lo firma el cliente", s:"todo", r:F, f:"" }
+          ]},
+          { id:"op-gestion", name:"Gestión y control", tasks:[
+            { id:"d5", t:"Estructura documental por proyecto", d:"SharePoint · OneDrive", s:"todo", r:F, f:"" },
+            { id:"d12", t:"Tablero de control de proyectos", d:"Estatus, fechas y responsables por proyecto", s:"todo", r:F, f:"" },
+            { id:"d13", t:"Cadencia de seguimiento entre socios", d:"Revisión semanal de avance y pipeline", s:"todo", r:F, f:"" }
+          ]}
+        ]
+      }
+    ]
+  };
+
+  let state = null;
+  /* Persistencia: window.storage de Claude → localStorage del navegador → memoria */
+  const store = (function(){
+    if(typeof window !== "undefined" && window.storage && typeof window.storage.get === "function"){
+      return {
+        kind: "claude",
+        async get(k){ try{ const r = await window.storage.get(k); return r && r.value ? r.value : null; }catch(e){ return null; } },
+        async set(k, v){ try{ return !!(await window.storage.set(k, v)); }catch(e){ return false; } }
+      };
+    }
+    try{
+      const t = "__mcs__"; localStorage.setItem(t, "1"); localStorage.removeItem(t);
+      return {
+        kind: "local",
+        async get(k){ return localStorage.getItem(k); },
+        async set(k, v){ try{ localStorage.setItem(k, v); return true; }catch(e){ return false; } }
+      };
+    }catch(e){}
+    const mem = {};
+    return { kind: "mem", async get(k){ return (k in mem) ? mem[k] : null; }, async set(k, v){ mem[k] = v; return true; } };
+  })();
+  const OK_LABEL = store.kind === "claude" ? "GUARDADO" : "GUARDADO · NAVEGADOR";
+  const $ = (s, el) => (el || document).querySelector(s);
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const z = n => String(n).padStart(2, "0");
+  const now = new Date();
+  const todayISO = now.getFullYear() + "-" + z(now.getMonth() + 1) + "-" + z(now.getDate());
+
+  function fmtDate(iso){
+    const p = iso.split("-").map(Number);
+    if(p.length !== 3 || p.some(isNaN)) return iso;
+    const d = new Date(p[0], p[1] - 1, p[2]);
+    let s = d.toLocaleDateString("es-MX", { day:"numeric", month:"short" }).replace(".", "");
+    if(p[0] !== now.getFullYear()) s += " " + String(p[0]).slice(2);
+    return s;
+  }
+  const isLate = t => !!t.f && t.s !== "done" && t.f < todayISO;
+  const defResp = gid => (gid === "adm-soft" || gid === "adm-infra") ? F
+    : (gid.indexOf("adm") === 0 || gid === "com-pipe") ? P : F;
+
+  /* Parches sobre estado ya guardado */
+  function applyPatches(st){
+    const p = st.patch || 2;
+    if(p < 3){
+      const mios = ["a12","a13","a14","a15","a16","a17","a18"];
+      let hayA19 = false;
+      for(const ch of st.channels || []) for(const g of ch.groups || []) for(const t of g.tasks || []){
+        if(mios.indexOf(t.id) > -1) t.r = F;
+        if(t.id === "a19") hayA19 = true;
+      }
+      if(!hayA19){
+        for(const ch of st.channels || []){
+          const g = (ch.groups || []).find(g => g.id === "adm-soft");
+          if(g) g.tasks.unshift({ id:"a19", t:"Definición de tech stack final y costeo", d:"", s:"todo", r:F, f:"2026-08-04" });
+        }
+      }
+      st.patch = 3;
+    }
+    return st;
+  }
+
+  /* ── Persistencia ───────────────────────────────── */
+  function setStatus(txt, err){
+    const el = $("#saveStatus");
+    el.textContent = txt;
+    el.classList.toggle("err", !!err);
+  }
+  let saveTimer = null;
+  function scheduleSave(){
+    state.updatedAt = Date.now();
+    renderStamp();
+    if(store.kind === "mem"){ setStatus("SOLO SESIÓN · SIN GUARDADO", true); return; }
+    setStatus("GUARDANDO…");
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(doSave, 450);
+  }
+  async function doSave(){
+    const ok = await store.set(KEY, JSON.stringify(state));
+    setStatus(ok ? OK_LABEL : "ERROR AL GUARDAR", !ok);
+  }
+  async function readKey(k){
+    try{
+      const v = await store.get(k);
+      if(v) return JSON.parse(v);
+    }catch(e){ /* llave inexistente o inválida */ }
+    return null;
+  }
+
+  /* Migración v1 → v2: conserva estatus, fechas y tareas agregadas */
+  function migrate(old){
+    const st = JSON.parse(JSON.stringify(SEED));
+    st.updatedAt = Date.now();
+    const byId = {}, byGroup = {};
+    for(const ch of st.channels) for(const g of ch.groups){
+      byGroup[g.id] = g;
+      for(const t of g.tasks) byId[t.id] = t;
+    }
+    for(const ch of (old.channels || [])) for(const g of (ch.groups || [])) for(const t of (g.tasks || [])){
+      if(byId[t.id]){
+        if(t.s) byId[t.id].s = t.s;
+        if(t.f) byId[t.id].f = t.f;
+      }else if(String(t.id).charAt(0) === "t"){
+        const tg = byGroup[g.id];
+        if(tg) tg.tasks.push({ id:t.id, t:t.t || "", d:t.d || "", s:t.s || "todo", r:t.r || defResp(g.id), f:t.f || "" });
+      }
+    }
+    return st;
+  }
+
+  /* Los textos de canales y grupos siempre vienen del código */
+  function syncMeta(st){
+    for(const sc of SEED.channels){
+      const lc = (st.channels || []).find(c => c.id === sc.id);
+      if(!lc) continue;
+      lc.num = sc.num; lc.name = sc.name; lc.h2 = sc.h2;
+      for(const sg of sc.groups){
+        const lg = (lc.groups || []).find(g => g.id === sg.id);
+        if(lg) lg.name = sg.name;
+      }
+    }
+    return st;
+  }
+
+  /* ── Búsqueda en el estado ──────────────────────── */
+  function findTask(id){
+    for(const ch of state.channels)
+      for(const g of ch.groups){
+        const i = g.tasks.findIndex(t => t.id === id);
+        if(i > -1) return { g, i, task: g.tasks[i] };
+      }
+    return null;
+  }
+  function findGroup(gid){
+    for(const ch of state.channels){
+      const g = ch.groups.find(g => g.id === gid);
+      if(g) return g;
+    }
+    return null;
+  }
+
+  /* ── Conteos ────────────────────────────────────── */
+  function countCh(ch){
+    let done = 0, prog = 0, total = 0;
+    for(const g of ch.groups) for(const t of g.tasks){
+      total++;
+      if(t.s === "done") done++;
+      else if(t.s === "prog") prog++;
+    }
+    return { done, prog, total };
+  }
+  function countAll(){
+    return state.channels.reduce((a, ch) => {
+      const c = countCh(ch);
+      a.done += c.done; a.prog += c.prog; a.total += c.total;
+      return a;
+    }, { done:0, prog:0, total:0 });
+  }
+
+  /* ── Render ─────────────────────────────────────── */
+  function render(){
+    renderChips();
+    renderChannels();
+    renderProgress();
+    renderStamp();
+  }
+  function renderChips(){
+    $("#chips").innerHTML = state.channels.map(ch => {
+      const c = countCh(ch);
+      return `<a class="chip" href="#c-${ch.id}"><span class="n">${ch.num}</span>&nbsp; ${esc(ch.name)}<span class="c">${c.done}/${c.total}</span></a>`;
+    }).join("");
+  }
+  function metaChips(t){
+    return `<span class="meta">
+      <span class="tag">En proceso</span>
+      <button class="chip-f${t.f ? "" : " empty"}${isLate(t) ? " late" : ""}" aria-label="Fecha límite">${t.f ? esc(fmtDate(t.f)) : "+ Fecha"}</button>
+      <button class="chip-r" aria-label="Cambiar responsable">${esc(t.r || F)}</button>
+    </span>`;
+  }
+  function renderChannels(){
+    $("#channels").innerHTML = state.channels.map(ch => {
+      const c = countCh(ch);
+      return `
+      <section class="canal" id="c-${ch.id}">
+        <div class="canal-head">
+          <div>
+            <div class="kicker">Canal ${ch.num}</div>
+            <h2>${ch.h2}</h2>
+          </div>
+          <div class="canal-count"><b>${c.done}/${c.total}</b> hechas${c.prog ? ` · ${c.prog} en proceso` : ""}</div>
+        </div>
+        ${ch.groups.map(g => `
+          <div class="grupo" data-g="${g.id}">
+            <div class="grupo-label">${esc(g.name)}</div>
+            ${g.tasks.map(t => `
+              <div class="task" data-id="${t.id}" data-s="${t.s}">
+                <button class="chk" aria-label="Cambiar estado: ${esc(t.t)}"></button>
+                <div class="task-body">
+                  <div class="task-text">${esc(t.t)}</div>
+                  <div class="task-detail">${esc(t.d || "")}</div>
+                </div>
+                ${metaChips(t)}
+                <button class="del" aria-label="Eliminar: ${esc(t.t)}">×</button>
+              </div>`).join("")}
+            <div class="add-row"><button class="add-btn">+ Agregar tarea</button></div>
+          </div>`).join("")}
+      </section>`;
+    }).join("");
+  }
+  function renderProgress(){
+    $("#progRows").innerHTML = state.channels.map(ch => {
+      const c = countCh(ch);
+      const pd = c.total ? (c.done / c.total * 100) : 0;
+      const pp = c.total ? (c.prog / c.total * 100) : 0;
+      return `<a class="prow" href="#c-${ch.id}" aria-label="${esc(ch.name)}: ${c.done} de ${c.total} hechas">
+        <span class="plabel"><span class="n">${ch.num}</span>${esc(ch.name)}</span>
+        <span class="pbar"><i class="f1" style="width:${pd}%"></i><i class="f2" style="left:${pd}%;width:${pp}%"></i></span>
+        <span class="pfrac">${c.done}/${c.total}</span>
+      </a>`;
+    }).join("");
+    const c = countAll();
+    $("#progNums").innerHTML =
+      `<span><b>${c.done}</b> hechas</span> &nbsp;·&nbsp; ` +
+      `<span class="np"><b>${c.prog}</b> en proceso</span> &nbsp;·&nbsp; ` +
+      `<span><b>${c.total - c.done - c.prog}</b> pendientes</span>`;
+  }
+  function renderStamp(){
+    const d = new Date(state.updatedAt);
+    const f = d.toLocaleDateString("es-MX", { day:"numeric", month:"short", year:"numeric" });
+    const h = d.toLocaleTimeString("es-MX", { hour:"2-digit", minute:"2-digit" });
+    $("#stamp").textContent = `Actualizado ${f} · ${h}`;
+  }
+
+  /* ── Edición en línea ───────────────────────────── */
+  function startEdit(el, task, field){
+    if(el.querySelector("input")) return;
+    const original = task[field === "t" ? "t" : "d"] || "";
+    const input = document.createElement("input");
+    input.className = "edit-input" + (field === "d" ? " detail" : "");
+    input.value = original;
+    el.textContent = "";
+    el.appendChild(input);
+    input.focus();
+    input.setSelectionRange(input.value.length, input.value.length);
+    let closed = false;
+    const commit = () => {
+      if(closed) return; closed = true;
+      const v = input.value.trim();
+      if(field === "t"){ if(v) task.t = v; }
+      else task.d = v;
+      render(); scheduleSave();
+    };
+    const cancel = () => { if(closed) return; closed = true; render(); };
+    input.addEventListener("keydown", e => {
+      if(e.key === "Enter") commit();
+      if(e.key === "Escape") cancel();
+    });
+    input.addEventListener("blur", commit);
+  }
+
+  /* ── Fecha límite ───────────────────────────────── */
+  function startDate(chip, task){
+    const input = document.createElement("input");
+    input.type = "date";
+    input.className = "date-input";
+    input.value = task.f || "";
+    chip.replaceWith(input);
+    input.focus();
+    try{ if(input.showPicker) input.showPicker(); }catch(e){}
+    let closed = false;
+    const commit = () => {
+      if(closed) return; closed = true;
+      task.f = input.value || "";
+      render(); scheduleSave();
+    };
+    input.addEventListener("change", commit);
+    input.addEventListener("keydown", e => {
+      if(e.key === "Enter") commit();
+      if(e.key === "Escape"){ closed = true; render(); }
+    });
+    input.addEventListener("blur", () => setTimeout(commit, 150));
+  }
+
+  /* ── Agregar tarea ──────────────────────────────── */
+  function startAdd(row, gid){
+    row.innerHTML = `<div class="add-form">
+      <input class="add-input" placeholder="Nueva tarea">
+      <span class="add-hint">ENTER GUARDA · ESC CANCELA</span></div>`;
+    const input = row.querySelector("input");
+    input.focus();
+    let closed = false;
+    const commit = () => {
+      if(closed) return; closed = true;
+      const v = input.value.trim();
+      if(v){
+        const g = findGroup(gid);
+        if(g) g.tasks.push({ id:"t" + Date.now().toString(36), t:v, d:"", s:"todo", r:defResp(gid), f:"" });
+        render(); scheduleSave();
+      } else render();
+    };
+    input.addEventListener("keydown", e => {
+      if(e.key === "Enter") commit();
+      if(e.key === "Escape"){ closed = true; render(); }
+    });
+    input.addEventListener("blur", commit);
+  }
+
+  /* ── Respaldo JSON: exportar e importar ─────────── */
+  function exportJSON(){
+    const d = new Date();
+    const name = "mcs-checklist-" + d.getFullYear() + z(d.getMonth() + 1) + z(d.getDate()) + ".json";
+    const blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 500);
+  }
+  function importJSON(file){
+    const rd = new FileReader();
+    rd.onload = () => {
+      try{
+        const data = JSON.parse(rd.result);
+        if(!data || !Array.isArray(data.channels)) throw new Error("formato");
+        state = applyPatches(syncMeta(data));
+        render(); scheduleSave();
+      }catch(e){ setStatus("ARCHIVO NO VÁLIDO", true); }
+    };
+    rd.readAsText(file);
+  }
+
+  /* ── Eventos delegados ──────────────────────────── */
+  document.addEventListener("click", e => {
+    const chk = e.target.closest(".chk");
+    if(chk){
+      const id = chk.closest(".task").dataset.id;
+      const r = findTask(id);
+      if(r){
+        r.task.s = r.task.s === "todo" ? "prog" : r.task.s === "prog" ? "done" : "todo";
+        render(); scheduleSave();
+      }
+      return;
+    }
+    const cr = e.target.closest(".chip-r");
+    if(cr){
+      const id = cr.closest(".task").dataset.id;
+      const r = findTask(id);
+      if(r){
+        r.task.r = (r.task.r === F) ? P : F;
+        render(); scheduleSave();
+      }
+      return;
+    }
+    const cf = e.target.closest(".chip-f");
+    if(cf){
+      const id = cf.closest(".task").dataset.id;
+      const r = findTask(id);
+      if(r) startDate(cf, r.task);
+      return;
+    }
+    const del = e.target.closest(".del");
+    if(del){
+      if(del.classList.contains("arm")){
+        const id = del.closest(".task").dataset.id;
+        const r = findTask(id);
+        if(r){ r.g.tasks.splice(r.i, 1); render(); scheduleSave(); }
+      }else{
+        del.classList.add("arm");
+        del.textContent = "¿Eliminar?";
+        setTimeout(() => { if(del.isConnected){ del.classList.remove("arm"); del.textContent = "×"; } }, 2600);
+      }
+      return;
+    }
+    const add = e.target.closest(".add-btn");
+    if(add){
+      startAdd(add.closest(".add-row"), add.closest(".grupo").dataset.g);
+      return;
+    }
+    if(e.target.closest("#exportBtn")){ exportJSON(); return; }
+    if(e.target.closest("#importBtn")){ $("#importFile").click(); return; }
+    const reset = e.target.closest("#resetBtn");
+    if(reset){
+      if(reset.classList.contains("arm")){
+        state = JSON.parse(JSON.stringify(SEED));
+        state.updatedAt = Date.now();
+        render(); scheduleSave();
+        reset.classList.remove("arm");
+        reset.textContent = "Restablecer lista";
+      }else{
+        reset.classList.add("arm");
+        reset.textContent = "¿Confirmar? Se pierde todo";
+        setTimeout(() => { if(reset.isConnected){ reset.classList.remove("arm"); reset.textContent = "Restablecer lista"; } }, 3200);
+      }
+    }
+  });
+  document.addEventListener("dblclick", e => {
+    const txt = e.target.closest(".task-text, .task-detail");
+    if(!txt) return;
+    const id = txt.closest(".task").dataset.id;
+    const r = findTask(id);
+    if(r) startEdit(txt, r.task, txt.classList.contains("task-text") ? "t" : "d");
+  });
+  document.getElementById("importFile").addEventListener("change", e => {
+    const f = e.target.files && e.target.files[0];
+    if(f) importJSON(f);
+    e.target.value = "";
+  });
+
+  /* ── Inicio ─────────────────────────────────────── */
+  (async function init(){
+    const v2 = await readKey(KEY);
+    if(v2 && v2.channels){
+      state = applyPatches(syncMeta(v2));
+      setStatus(OK_LABEL);
+      render();
+      doSave();
+      return;
+    }
+    const v1 = await readKey(KEY_V1);
+    if(v1 && v1.channels){
+      state = migrate(v1);
+      render();
+      doSave();
+      return;
+    }
+    state = JSON.parse(JSON.stringify(SEED));
+    render();
+    if(store.kind === "mem"){ setStatus("SOLO SESIÓN · SIN GUARDADO", true); }
+    else { doSave(); }
+  })();
+})();
+</script>
+</body>
+</html>
