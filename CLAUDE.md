@@ -40,14 +40,14 @@ Reglas:
 
 ## Arquitectura de index.html
 
-- `SEED`: estado semilla completo (canales → grupos → tareas). Cada tarea: `{ id, t, d, s, r, f }` donde `s` es `todo | prog | done`, `r` es responsable (`Fray` o `Pancho`), `f` es fecha límite ISO `YYYY-MM-DD` o vacío.
+- `SEED`: estado semilla completo (canales → grupos → tareas). Cada tarea: `{ id, t, d, s, r, f }` donde `s` es `todo | prog | done`, `r` es responsable (`Fray`, `Pancho` o `Angel`, en ese ciclo al hacer clic), `f` es fecha límite ISO `YYYY-MM-DD` o vacío.
 - `store`: adaptador de persistencia con tres backends en cascada y un solo contrato: `async get(key) -> string | null`, `async set(key, value) -> bool`.
   1. `window.storage` (artefactos de Claude)
   2. `localStorage` (GitHub Pages y navegador)
   3. Memoria (solo sesión)
 - Llave de estado: `meridian-arranque-v2`. El estado completo se guarda como un solo JSON.
 - `syncMeta(state)`: los títulos de canales y grupos siempre vienen del código, nunca del estado guardado.
-- `applyPatches(state)`: migraciones idempotentes sobre estado ya guardado. Cada cambio estructural incrementa `state.patch` y se aplica una sola vez.
+- `applyPatches(state)`: migraciones idempotentes sobre estado ya guardado. Cada cambio estructural incrementa `state.patch` y se aplica una sola vez. Parche vigente: 7. Un parche puede dar de alta un bloque completo con `seedGroup(id)`. Los parches toman los textos de `SEED` con `seedTask(id)`, para no duplicar copy entre semilla y parche.
 - Exportar e importar JSON en el footer: respaldo y traslado de estado entre navegadores o dispositivos.
 
 ## Reglas al editar

@@ -369,7 +369,7 @@
   "use strict";
   const KEY    = "meridian-arranque-v2";
   const KEY_V1 = "meridian-arranque-v1";
-  const F = "Fray", P = "Pancho";
+  const F = "Fray", P = "Pancho", A = "Angel";
 
   /* ── Puerta de acceso ───────────────────────────────
      Cortina, no candado: el repo es publico y el contenido
@@ -432,7 +432,7 @@
   /* ── Datos semilla ──────────────────────────────── */
   const SEED = {
     version: 2,
-    patch: 5,
+    patch: 7,
     updatedAt: Date.now(),
     channels: [
       {
@@ -452,20 +452,28 @@
           { id:"adm-banco", name:"Bancario y gastos", tasks:[
             { id:"a9",  t:"Apertura de cuenta bancaria empresarial", d:"Requiere escritura, RFC y poderes", s:"todo", r:P, f:"" },
             { id:"a10", t:"Solicitud de tarjetas corporativas", d:"", s:"todo", r:P, f:"" },
-            { id:"a11", t:"Esquema de comprobación de gastos", d:"Política de viáticos y reembolsos", s:"todo", r:P, f:"" }
+            { id:"a11", t:"Esquema de comprobación de gastos", d:"Política de viáticos y reembolsos", s:"todo", r:P, f:"" },
+            { id:"a29", t:"Refacturar las compras de GoDaddy a la empresa", d:"6,813.41 MXN pagados a la Visa registrada · directo con José Ruiz, jose8564@godaddy.com, para evitar doble cobro, en cuanto salga el alta fiscal", s:"todo", r:P, f:"" }
           ]},
           { id:"adm-soft", name:"Software y licencias", tasks:[
-            { id:"a19", t:"Definición de tech stack final y costeo", d:"", s:"todo", r:F, f:"2026-08-04" },
-            { id:"a12", t:"Microsoft 365: 1 licencia de administración", d:"Al menos plan Pro", s:"todo", r:F, f:"" },
-            { id:"a13", t:"Claude: 3 licencias Max", d:"", s:"todo", r:F, f:"" },
-            { id:"a14", t:"Supabase: 1 licencia Pro", d:"", s:"todo", r:F, f:"" },
-            { id:"a15", t:"Vercel: 1 licencia Pro", d:"", s:"todo", r:F, f:"" },
-            { id:"a16", t:"GitHub: 2 licencias", d:"", s:"todo", r:F, f:"" },
-            { id:"a20", t:"Docusign: licencias de firma electrónica", d:"Definir plan y número de licencias", s:"todo", r:F, f:"" }
+            { id:"a19", t:"Definición de tech stack final y costeo", d:"Cotización cerrada · ≈ 272.50 USD al mes y ≈ 60,400 MXN al año, sin IVA", s:"done", r:F, f:"2026-08-04" },
+            { id:"a12", t:"Microsoft 365: 3 licencias Business Standard", d:"12.50 USD por usuario al mes con facturación anual · hoy el correo está en GoDaddy", s:"todo", r:F, f:"" },
+            { id:"a13", t:"Claude: 1 licencia Max 5x y 2 Pro", d:"100 USD desarrollo y 20 USD por cada consultoría · subir de plan solo contra límites reales", s:"todo", r:F, f:"" },
+            { id:"a14", t:"Supabase: 1 licencia Pro", d:"25 USD al mes, incluye 10 USD de cómputo", s:"todo", r:F, f:"" },
+            { id:"a15", t:"Vercel: 1 licencia Pro", d:"20 USD al mes · solo quien despliega necesita asiento", s:"todo", r:F, f:"" },
+            { id:"a16", t:"GitHub: 2 licencias Team", d:"4 USD por usuario al mes · repos privados con Pages", s:"todo", r:F, f:"" },
+            { id:"a20", t:"DocuSign: 1 licencia eSignature Standard", d:"30 USD al mes · el plan Personal topa en 5 envíos", s:"todo", r:F, f:"" },
+            { id:"a21", t:"Bitwarden: 3 licencias Teams", d:"4 USD por usuario al mes con facturación anual · banca, SAT, e.firma y proveedores", s:"todo", r:F, f:"" },
+            { id:"a22", t:"Cloudflare Free: DNS del dominio", d:"Sin costo · decidir si el DNS se mueve de GoDaddy, con SPF, DKIM y DMARC", s:"todo", r:F, f:"" },
+            { id:"a23", t:"Facturama: módulo API y folios de timbrado", d:"1,650 MXN al año · CFDI 4.0 desde el CRM · arranca con el alta fiscal", s:"todo", r:F, f:"" }
           ]},
           { id:"adm-infra", name:"Infraestructura digital", tasks:[
-            { id:"a17", t:"Dominio y hosting del sitio", d:"", s:"todo", r:F, f:"" },
-            { id:"a18", t:"Correo corporativo", d:"Sobre el tenant de Microsoft 365", s:"todo", r:F, f:"" }
+            { id:"a17", t:"Dominios y hosting del sitio", d:"meridiancs.mx y meridiancs.app comprados a 2 años en GoDaddy · el sitio corre en .mx, el .app queda reservado", s:"done", r:F, f:"" },
+            { id:"a18", t:"Correo corporativo", d:"3 buzones de 50 GB a 1 año: francisco@, alfredo@ y angel@ · acceso en email.meridiancs.mx con el correo completo como usuario", s:"done", r:F, f:"" },
+            { id:"a25", t:"Francisco y Angel: crear clave y probar el correo", d:"Fray manda la liga de alta · en celular funciona con la app de Outlook", s:"todo", r:P, f:"" },
+            { id:"a26", t:"Verificar el dominio en el gateway de correo", d:"El formulario del sitio no entrega: error request invalid, es configuración de GoDaddy · escalar con José Ruiz", s:"todo", r:F, f:"" },
+            { id:"a27", t:"Decidir el upgrade de correo a Microsoft 365", d:"Office y OneDrive de 1 TB · con José Ruiz y ya con factura de la empresa · mismo criterio para el resto del stack", s:"todo", r:F, f:"" },
+            { id:"a28", t:"Calendario de renovaciones del stack", d:"Renovación automática activada en GoDaddy · dominios a 2 años, correos y Airo a 1 año · se cancela en Renovación y facturación", s:"todo", r:F, f:"" }
           ]}
         ]
       },
@@ -480,7 +488,8 @@
             { id:"b4", t:"Template maestro de presentaciones", d:"Chrome institucional · footer · emblema", s:"prog", r:F, f:"" },
             { id:"b5", t:"Template de propuesta y documentos", d:"", s:"todo", r:F, f:"" },
             { id:"b6", t:"Firma de correo", d:"", s:"todo", r:F, f:"" },
-            { id:"b7", t:"Sitio web: contenido, diseño y publicación", d:"", s:"todo", r:F, f:"" },
+            { id:"b7", t:"Sitio web: contenido, diseño y publicación", d:"meridiancs.mx · one-page: hero, propósito, servicios en 6 fases, industrias, quiénes somos, cómo empezamos y contacto · montada en Airo de GoDaddy sobre nuestro diseño", s:"done", r:F, f:"" },
+            { id:"b10", t:"Revisar el sitio y pasar ajustes", d:"Francisco y Angel revisan y mandan cambios", s:"todo", r:P, f:"" },
             { id:"b8", t:"Página de empresa en LinkedIn", d:"", s:"todo", r:F, f:"" },
             { id:"b9", t:"One-pager institucional", d:"", s:"todo", r:F, f:"" }
           ]}
@@ -502,7 +511,8 @@
           ]},
           { id:"com-pipe", name:"Pipeline", tasks:[
             { id:"c7", t:"Prospección: Papelerías Marón (Tampico)", d:"", s:"todo", r:P, f:"" },
-            { id:"c8", t:"Lista de prospectos por giro", d:"", s:"todo", r:P, f:"" }
+            { id:"c8", t:"Lista de prospectos por giro", d:"", s:"todo", r:P, f:"" },
+            { id:"c9", t:"Oportunidad: validación de CURP contra RENAPO", d:"Vía Mike · 1 millón de consultas al año · el avance técnico y la propuesta van en el canal operativo", s:"prog", r:F, f:"" }
           ]}
         ]
       },
@@ -512,9 +522,19 @@
         groups:[
           { id:"op-proj", name:"Proyectos en curso", tasks:[
             { id:"d1", t:"Estudio de mercado 1: entregado", d:"Vendido y entregado al cliente", s:"done", r:F, f:"" },
-            { id:"d2", t:"Estudio PPR (Sura): definir enfoque", d:"Desempleo o desempeño · acordar con el cliente", s:"prog", r:F, f:"" },
-            { id:"d7", t:"Estudio PPR (Sura): levantamiento y análisis", d:"Fuentes, datos y hallazgos", s:"todo", r:F, f:"" },
-            { id:"d8", t:"Estudio PPR (Sura): informe final y envío", d:"", s:"todo", r:F, f:"" }
+            { id:"d2", t:"Estudio PPR (Sura): definir enfoque", d:"Desempleo o desempeño · acordado con el cliente", s:"done", r:F, f:"" },
+            { id:"d7", t:"Estudio PPR (Sura): levantamiento y análisis", d:"25 emisores, 12 fichas a detalle, comisiones al canal y benchmark de desempleo en 4 países · corte al 31 de julio", s:"done", r:F, f:"" },
+            { id:"d8", t:"Estudio PPR (Sura): informe final y envío", d:"Publicado el 2 de agosto en marketintelligencemx.github.io/Sura2 · sitio con acceso por clave, se comparte aparte", s:"done", r:F, f:"" },
+            { id:"d21", t:"Estudio PPR (Sura): ajustes posteriores a la entrega", d:"Bloque comparativo de GNP, hilo de lectura, visuales y lectura en celular", s:"done", r:F, f:"" }
+          ]},
+          { id:"op-renapo", name:"Requerimiento RENAPO", tasks:[
+            { id:"d14", t:"Validar que la API regrese el estatus de defunción", d:"Baja por Defunción en la CURP · probar contra casos conocidos antes de comprometer nada", s:"prog", r:F, f:"" },
+            { id:"d15", t:"Prueba de volumen y estabilidad de la API", d:"Lotes de prueba · el requerimiento habla de 60 mil por corrida y 1 millón de consultas al año", s:"todo", r:F, f:"" },
+            { id:"d16", t:"Cerrar el costo directo por consulta", d:"Objetivo de 0.25 a 0.50 MXN contra los 2.17 que les cotizó Verificamex · número firme con las pruebas", s:"todo", r:F, f:"2026-08-14" },
+            { id:"d17", t:"Diseño de la corrida por lotes", d:"Entrada de la base del cliente, salida con estatus y evidencia por registro", s:"todo", r:F, f:"" },
+            { id:"d18", t:"Definir el alcance de entrega", d:"Portal de consulta o corrida gestionada con reporte por lote", s:"todo", r:F, f:"" },
+            { id:"d19", t:"Propuesta comercial y precio", d:"Hipótesis: 1.20 MXN por registro con iguala mensual y contrato anual · confirmar contra el costo directo real", s:"todo", r:F, f:"" },
+            { id:"d20", t:"Confirmar con Mike la fecha de respuesta", d:"El cliente no tiene nada armado hoy · definir cuándo se entrega el entendimiento", s:"todo", r:F, f:"" }
           ]},
           { id:"op-metod", name:"Metodología de estudios", tasks:[
             { id:"d3", t:"Metodología estándar documentada", d:"Fases, tiempos y entregables por estudio", s:"todo", r:F, f:"" },
@@ -578,6 +598,22 @@
   const SEED_GIDS = new Set();
   for(const ch of SEED.channels) for(const g of ch.groups) SEED_GIDS.add(g.id);
 
+  /* Bloque de semilla por id: canal y grupo */
+  function seedGroup(id){
+    for(const ch of SEED.channels) for(const g of ch.groups){
+      if(g.id === id) return { ch: ch.id, g: g };
+    }
+    return null;
+  }
+
+  /* Tarea de semilla por id: la usan los parches para no duplicar textos */
+  function seedTask(id){
+    for(const ch of SEED.channels) for(const g of ch.groups) for(const t of g.tasks){
+      if(t.id === id) return t;
+    }
+    return null;
+  }
+
   function chanOfGroup(gid){
     for(const ch of state.channels) if((ch.groups || []).some(g => g.id === gid)) return ch;
     return null;
@@ -630,6 +666,92 @@
         groups.splice(i, 1);
       }
       st.patch = 5;
+    }
+    if(p < 6){
+      /* Stack cotizado, dominios, correos y sitio publicado · 7 ago 2026 */
+      const REESCRIBE = ["a12","a13","a14","a15","a16","a17","a18","a19","a20","b7"];
+      const NUEVAS = [
+        { id:"a21", g:"adm-soft",  tras:"a20" },
+        { id:"a22", g:"adm-soft",  tras:"a21" },
+        { id:"a23", g:"adm-soft",  tras:"a22" },
+        { id:"a25", g:"adm-infra", tras:"a18" },
+        { id:"a26", g:"adm-infra", tras:"a25" },
+        { id:"a27", g:"adm-infra", tras:"a26" },
+        { id:"a28", g:"adm-infra", tras:"a27" },
+        { id:"a29", g:"adm-banco", tras:"a11" },
+        { id:"b10", g:"brand-id",  tras:"b7"  }
+      ];
+      const vistos = new Set();
+      for(const ch of st.channels || []) for(const g of ch.groups || []) for(const t of g.tasks || []){
+        vistos.add(t.id);
+        if(REESCRIBE.indexOf(t.id) < 0) continue;
+        const sd = seedTask(t.id);
+        if(!sd) continue;
+        t.t = sd.t;
+        t.d = sd.d;
+        if(sd.s === "done") t.s = "done";
+      }
+      for(const n of NUEVAS){
+        if(vistos.has(n.id)) continue;
+        const sd = seedTask(n.id);
+        if(!sd) continue;
+        for(const ch of st.channels || []){
+          const g = (ch.groups || []).find(g => g.id === n.g);
+          if(!g) continue;
+          const i = (g.tasks || []).findIndex(t => t.id === n.tras);
+          const copia = JSON.parse(JSON.stringify(sd));
+          if(i > -1) g.tasks.splice(i + 1, 0, copia); else g.tasks.push(copia);
+          vistos.add(n.id);
+          break;
+        }
+      }
+      st.patch = 6;
+    }
+    if(p < 7){
+      /* Segundo estudio entregado y alta del requerimiento RENAPO · 7 ago 2026 */
+      const REESCRIBE7 = ["d2","d7","d8"];
+      const NUEVAS7 = [
+        { id:"d21", g:"op-proj",  tras:"d8" },
+        { id:"c9",  g:"com-pipe", tras:"c8" }
+      ];
+      /* Bloque nuevo: se inserta después de Proyectos en curso */
+      const sg = seedGroup("op-renapo");
+      if(sg){
+        for(const ch of st.channels || []){
+          if(ch.id !== sg.ch) continue;
+          const groups = ch.groups || [];
+          if(groups.some(g => g.id === "op-renapo")) break;
+          const i = groups.findIndex(g => g.id === "op-proj");
+          const copia = JSON.parse(JSON.stringify(sg.g));
+          if(i > -1) groups.splice(i + 1, 0, copia); else groups.push(copia);
+          break;
+        }
+      }
+      const vistos7 = new Set();
+      for(const ch of st.channels || []) for(const g of ch.groups || []) for(const t of g.tasks || []){
+        vistos7.add(t.id);
+        if(REESCRIBE7.indexOf(t.id) < 0) continue;
+        const sd = seedTask(t.id);
+        if(!sd) continue;
+        t.t = sd.t;
+        t.d = sd.d;
+        if(sd.s === "done") t.s = "done";
+      }
+      for(const n of NUEVAS7){
+        if(vistos7.has(n.id)) continue;
+        const sd = seedTask(n.id);
+        if(!sd) continue;
+        for(const ch of st.channels || []){
+          const g = (ch.groups || []).find(g => g.id === n.g);
+          if(!g) continue;
+          const i = (g.tasks || []).findIndex(t => t.id === n.tras);
+          const copia = JSON.parse(JSON.stringify(sd));
+          if(i > -1) g.tasks.splice(i + 1, 0, copia); else g.tasks.push(copia);
+          vistos7.add(n.id);
+          break;
+        }
+      }
+      st.patch = 7;
     }
     return st;
   }
@@ -979,7 +1101,7 @@
       const id = cr.closest(".task").dataset.id;
       const r = findTask(id);
       if(r){
-        r.task.r = (r.task.r === F) ? P : F;
+        r.task.r = (r.task.r === F) ? P : (r.task.r === P) ? A : F;
         render(); scheduleSave();
       }
       return;
